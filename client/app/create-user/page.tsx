@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function CreateUserPage() {
@@ -9,6 +9,15 @@ export default function CreateUserPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [userId, setUserId] = useState("");
+
+  // Check if userId already exists in localStorage
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      // User already exists, redirect to exam form
+      router.push("/submit-exam");
+    }
+  }, [router]);
 
   const [formData, setFormData] = useState({
     studentName: "",
@@ -79,6 +88,9 @@ export default function CreateUserPage() {
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Create User Account
         </h2>
+        <p className="text-sm text-gray-500 text-center mb-6">
+          Step 1: Create your account. User ID will be saved automatically.
+        </p>
 
         {!success ? (
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -129,11 +141,7 @@ export default function CreateUserPage() {
               />
             </div>
 
-            {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-                {error}
-              </div>
-            )}
+            {error && <p className="text-red-600 text-sm">{error}</p>}
 
             <button
               type="submit"
@@ -145,12 +153,12 @@ export default function CreateUserPage() {
           </form>
         ) : (
           <div className="space-y-6">
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-green-800 font-semibold mb-2">
-                User created successfully!
+            <div>
+              <p className="text-gray-800 font-semibold mb-2">
+                User created successfully
               </p>
               <p className="text-sm text-gray-600 mb-4">
-                Copy your User ID to submit exam data:
+                User ID saved. You can now proceed to submit exam data.
               </p>
               <div className="flex items-center gap-2">
                 <input

@@ -143,15 +143,16 @@ export default function SubmitExamPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-['Roboto_Slab']">
         <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl border border-gray-200">
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-yellow-800 mb-2">
-              No User ID found. Please create a user first.
+          <div>
+            <p className="text-gray-800 mb-2">No User ID found</p>
+            <p className="text-sm text-gray-600 mb-4">
+              Create a user account first before submitting exam data.
             </p>
             <button
               onClick={() => router.push("/create-user")}
               className="text-blue-600 hover:text-blue-700 underline"
             >
-              Create User Account
+              Go to Create User Account
             </button>
           </div>
         </div>
@@ -166,13 +167,22 @@ export default function SubmitExamPage() {
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Submit All Exam Data
           </h2>
+          <p className="text-sm text-gray-500 text-center mb-6">
+            Step 2: Fill exam data for all exam types. Leave blank if not taken.
+            All data saved at once.
+          </p>
+          {userId && (
+            <p className="text-xs text-gray-500 text-center mb-6">
+              User ID: <span className="font-mono">{userId}</span>
+            </p>
+          )}
 
           {success ? (
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-              <p className="text-green-800 font-semibold mb-2">
-                All exam data submitted successfully!
+            <div className="text-center">
+              <p className="text-gray-800 font-semibold mb-2">
+                Exam data submitted successfully
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 mb-2">
                 Redirecting to home page...
               </p>
             </div>
@@ -311,11 +321,7 @@ export default function SubmitExamPage() {
                 );
               })}
 
-              {error && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-                  {error}
-                </div>
-              )}
+              {error && <p className="text-red-600 text-sm">{error}</p>}
 
               <div className="flex gap-4">
                 <button

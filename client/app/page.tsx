@@ -7,6 +7,7 @@ import Chart from "./components/Chart";
 import FeedbackSection from "./components/FeedbackSection";
 import ExamTypeTabs from "./components/ExamTypeTabs";
 import UserInfoSection from "./components/UserInfoSection";
+import CreateUserLink from "./components/CreateUserLink";
 import { getUserData } from "../lib/api";
 import { ExamType, getExamConfig } from "../lib/examTypes";
 import { generateAllFeedback } from "../lib/feedbackLogic";
@@ -119,15 +120,16 @@ export default function Home() {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
-              <div className="text-gray-600 mb-4">
-                No assessment data available
-              </div>
-              <a
-                href="/create-user"
-                className="text-blue-600 hover:text-blue-700 underline"
-              >
-                Create user account first
-              </a>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                Student Assessment Report
+              </h2>
+              <ul className="text-sm text-gray-600 mb-6 space-y-1 list-disc list-inside">
+                <li>Create a user account</li>
+                <li>Submit exam data for all exam types</li>
+                <li>View results with charts and feedback</li>
+              </ul>
+              <p className="text-gray-600 mb-4">No assessment data available yet.</p>
+              <CreateUserLink />
             </div>
           </div>
         </main>
@@ -138,6 +140,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <p className="text-sm text-gray-500 mb-6">
+          View exam results. Switch between exam types using tabs. Data fetched from backend server.
+        </p>
+
         {/* User Info Section */}
         <UserInfoSection
           studentName={userData.studentName}
