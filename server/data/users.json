@@ -1,0 +1,97 @@
+[
+  {
+    "userId": "user_1766619203914_zczeynmrh",
+    "studentName": "Anil",
+    "email": "anilrajput6441@gmail.com",
+    "mobile": "7428057438",
+    "profilePhoto": "/profile.jpg",
+    "exams": [
+      {
+        "_id": "exam_1766620073021_2msc4921z",
+        "examType": "speechace",
+        "testDate": "2025-12-24T00:00:00.000Z",
+        "overallScore": 6,
+        "scores": [
+          9,
+          5,
+          7,
+          3
+        ],
+        "createdAt": "2025-12-24T23:47:53.021Z",
+        "updatedAt": "2025-12-24T23:47:53.021Z"
+      },
+      {
+        "_id": "exam_1766620073021_o2ah9ptk7",
+        "examType": "cefr",
+        "testDate": "2025-12-24T00:00:00.000Z",
+        "overallScore": 6,
+        "scores": [
+          6,
+          6,
+          6,
+          6
+        ],
+        "createdAt": "2025-12-24T23:47:53.021Z",
+        "updatedAt": "2025-12-24T23:47:53.021Z"
+      },
+      {
+        "_id": "exam_1766620073021_pb5q9wt5i",
+        "examType": "ielts",
+        "testDate": "2025-12-24T00:00:00.000Z",
+        "overallScore": 9,
+        "scores": [
+          8,
+          7,
+          3,
+          3
+        ],
+        "createdAt": "2025-12-24T23:47:53.021Z",
+        "updatedAt": "2025-12-24T23:47:53.021Z"
+      },
+      {
+        "_id": "exam_1766620073021_ymk3psj3v",
+        "examType": "pte",
+        "testDate": "2025-12-24T00:00:00.000Z",
+        "overallScore": 0,
+        "scores": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "createdAt": "2025-12-24T23:47:53.021Z",
+        "updatedAt": "2025-12-24T23:47:53.021Z"
+      },
+      {
+        "_id": "exam_1766620073021_9om06bvav",
+        "examType": "toefl",
+        "testDate": "2025-12-24T00:00:00.000Z",
+        "overallScore": 0,
+        "scores": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "createdAt": "2025-12-24T23:47:53.021Z",
+        "updatedAt": "2025-12-24T23:47:53.021Z"
+      },
+      {
+        "_id": "exam_1766620073022_cqy017k7e",
+        "examType": "toeic",
+        "testDate": "2025-12-24T00:00:00.000Z",
+        "overallScore": 0,
+        "scores": [
+          199,
+          0,
+          141,
+          121
+        ],
+        "createdAt": "2025-12-24T23:47:53.022Z",
+        "updatedAt": "2025-12-24T23:47:53.022Z"
+      }
+    ],
+    "createdAt": "2025-12-24T23:33:23.914Z",
+    "updatedAt": "2025-12-24T23:47:53.022Z"
+  }
+]

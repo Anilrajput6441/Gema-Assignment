@@ -84,9 +84,9 @@ export default function UserInfoSection({
         {/* Right side: Add Info Button */}
         <div className="flex flex-col items-center gap-2 shrink-0">
           <Link
-            href="/submit"
+            href="/create-user"
             className="w-12 h-12 bg-gray-800 hover:bg-gray-900 rounded-full flex items-center justify-center text-white transition-colors duration-200"
-            title="Add user exam info"
+            title="Create user or submit exam"
           >
             <svg
               className="w-6 h-6"

@@ -7,45 +7,38 @@ import Chart from "./components/Chart";
 import FeedbackSection from "./components/FeedbackSection";
 import ExamTypeTabs from "./components/ExamTypeTabs";
 import UserInfoSection from "./components/UserInfoSection";
-import { getAllAssessments } from "../lib/api";
+import { getUserData } from "../lib/api";
 import { ExamType, getExamConfig } from "../lib/examTypes";
+import { generateAllFeedback } from "../lib/feedbackLogic";
 
-interface AssessmentData {
-  _id?: string;
+interface UserData {
   studentName: string;
-  examType?: ExamType;
-  testDate: string;
-  mobile?: string;
-  email?: string;
-  profilePhoto?: string;
-  overallScore: number;
-  skills: {
-    pronunciation: number;
-    fluency: number;
-    vocabulary: number;
-    grammar: number;
-  };
-  feedback: {
-    overall: string;
-    pronunciation: string;
-    fluency: string;
-    vocabulary: string;
-    grammar: string;
-  };
+  email: string;
+  mobile: string;
+  profilePhoto: string;
+  exams: Array<{
+    _id: string;
+    examType: ExamType;
+    testDate: string;
+    overallScore: number;
+    scores: number[]; // [pronunciation, fluency, vocabulary, grammar]
+    createdAt: string;
+    updatedAt: string;
+  }>;
 }
 
 export default function Home() {
-  const [allAssessments, setAllAssessments] = useState<AssessmentData[]>([]);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [currentExamType, setCurrentExamType] = useState<ExamType>("speechace");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const assessments = await getAllAssessments();
-        setAllAssessments(assessments || []);
+        const data = await getUserData();
+        setUserData(data);
       } catch (error) {
-        console.error("Error loading assessments:", error);
+        console.error("Error loading user data:", error);
       } finally {
         setLoading(false);
       }
@@ -54,58 +47,59 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // Refresh data when component mounts or when assessments might have changed
-  useEffect(() => {
-    const handleStorageChange = () => {
-      getAllAssessments().then((data) => {
-        setAllAssessments(data || []);
-      });
-    };
+  // Get current exam from userData
+  const currentExam = userData?.exams.find(
+    (exam) => exam.examType === currentExamType
+  ) || userData?.exams[0] || null;
 
-    if (typeof window !== "undefined") {
-      window.addEventListener("storage", handleStorageChange);
-      // Also check periodically for changes
-      const interval = setInterval(handleStorageChange, 1000);
-      return () => {
-        window.removeEventListener("storage", handleStorageChange);
-        clearInterval(interval);
-      };
-    }
-  }, []);
+  // Get available exam types
+  const availableExamTypes = userData?.exams
+    ? (Array.from(new Set(userData.exams.map((e) => e.examType))) as ExamType[])
+    : [];
 
-  // Get current assessment for selected exam type
-  const currentData =
-    allAssessments.find(
-      (assessment) => (assessment.examType || "speechace") === currentExamType
-    ) ||
-    allAssessments[0] ||
-    null;
-
-  // Get available exam types from assessments
-  const availableExamTypes = Array.from(
-    new Set(allAssessments.map((a) => a.examType || "speechace"))
-  ) as ExamType[];
-
-  // If current exam type has no data, try to find one that does
-  if (!currentData && allAssessments.length > 0) {
-    const firstAvailable = allAssessments[0];
-    if (firstAvailable?.examType) {
-      setCurrentExamType(firstAvailable.examType as ExamType);
-    }
+  // If current exam type has no data, switch to first available
+  if (currentExam && currentExam.examType !== currentExamType) {
+    setCurrentExamType(currentExam.examType);
   }
 
-  // Re-fetch current data after exam type might have changed
-  const updatedCurrentData =
-    allAssessments.find(
-      (assessment) => (assessment.examType || "speechace") === currentExamType
-    ) ||
-    allAssessments[0] ||
-    null;
-
-  const finalData = updatedCurrentData || currentData;
-  const finalExamConfig = finalData?.examType
-    ? getExamConfig(finalData.examType as ExamType)
+  const examConfig = currentExam
+    ? getExamConfig(currentExam.examType)
     : getExamConfig(currentExamType);
+
+  // Convert scores array to skills object for display
+  const skills = currentExam
+    ? {
+        pronunciation: currentExam.scores[0] || 0,
+        fluency: currentExam.scores[1] || 0,
+        vocabulary: currentExam.scores[2] || 0,
+        grammar: currentExam.scores[3] || 0,
+      }
+    : {
+        pronunciation: 0,
+        fluency: 0,
+        vocabulary: 0,
+        grammar: 0,
+      };
+
+  // Generate feedback
+  const feedback = currentExam
+    ? generateAllFeedback(
+        {
+          overall: currentExam.overallScore,
+          pronunciation: skills.pronunciation,
+          fluency: skills.fluency,
+          vocabulary: skills.vocabulary,
+          grammar: skills.grammar,
+        },
+        examConfig.maxScore
+      )
+    : {
+        overall: "",
+        pronunciation: "",
+        fluency: "",
+        vocabulary: "",
+        grammar: "",
+      };
 
   if (loading) {
     return (
@@ -119,7 +113,7 @@ export default function Home() {
     );
   }
 
-  if (!finalData && !loading) {
+  if (!userData || !currentExam) {
     return (
       <div className="min-h-screen bg-gray-50">
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -129,10 +123,10 @@ export default function Home() {
                 No assessment data available
               </div>
               <a
-                href="/submit"
+                href="/create-user"
                 className="text-blue-600 hover:text-blue-700 underline"
               >
-                Submit your first assessment
+                Create user account first
               </a>
             </div>
           </div>
@@ -141,20 +135,16 @@ export default function Home() {
     );
   }
 
-  if (!finalData) {
-    return null;
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* User Info Section */}
         <UserInfoSection
-          studentName={finalData.studentName}
-          testDate={finalData.testDate}
-          mobile={finalData.mobile}
-          email={finalData.email}
-          profilePhoto={finalData.profilePhoto}
+          studentName={userData.studentName}
+          testDate={currentExam.testDate}
+          mobile={userData.mobile}
+          email={userData.email}
+          profilePhoto={userData.profilePhoto}
         />
 
         {/* Summary of scores section with tabs */}
@@ -164,9 +154,7 @@ export default function Home() {
               Summary of scores
             </h2>
             <ExamTypeTabs
-              currentExamType={
-                (finalData.examType as ExamType) || currentExamType
-              }
+              currentExamType={currentExam.examType}
               onExamTypeChange={(examType) => {
                 setCurrentExamType(examType);
               }}
@@ -180,10 +168,10 @@ export default function Home() {
         {/* Overall Score */}
         <div className="mb-6">
           <ScoreCard
-            overallScore={finalData.overallScore}
-            maxScore={finalExamConfig.maxScore}
-            examType={finalData.examType || "speechace"}
-            examName={finalExamConfig.name}
+            overallScore={currentExam.overallScore}
+            maxScore={examConfig.maxScore}
+            examType={currentExam.examType}
+            examName={examConfig.name}
           />
         </div>
 
@@ -194,25 +182,22 @@ export default function Home() {
               SCORE VISUALISATION
             </h3>
             <Chart
-              skills={finalData.skills}
+              skills={skills}
               chartType="radar"
-              maxScore={finalExamConfig.maxScore}
+              maxScore={examConfig.maxScore}
             />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-700 mb-4">
               SKILL WISE SCORE
             </h3>
-            <SkillScores
-              skills={finalData.skills}
-              maxScore={finalExamConfig.maxScore}
-            />
+            <SkillScores skills={skills} maxScore={examConfig.maxScore} />
           </div>
         </div>
 
         {/* Descriptive Feedback */}
         <div className="mb-6">
-          <FeedbackSection feedback={finalData.feedback} />
+          <FeedbackSection feedback={feedback} />
         </div>
       </main>
     </div>

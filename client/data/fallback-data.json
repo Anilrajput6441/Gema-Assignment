@@ -1,15 +1,17 @@
 {
   "studentName": "Jeevan Chopra",
-  "examType": "speechace",
-  "testDate": "2021-10-14T00:00:00.000Z",
-  "mobile": "+1 234-567-8900",
   "email": "jeevan.chopra@example.com",
-  "overallScore": 7,
-  "skills": {
-    "pronunciation": 8,
-    "fluency": 7,
-    "vocabulary": 6,
-    "grammar": 7
-  },
-  "profilePhoto": "/profile.jpg"
+  "mobile": "+1 234-567-8900",
+  "profilePhoto": "/profile.jpg",
+  "exams": [
+    {
+      "_id": "fallback_1",
+      "examType": "speechace",
+      "testDate": "2021-10-14T00:00:00.000Z",
+      "overallScore": 7,
+      "scores": [8, 7, 6, 7],
+      "createdAt": "2021-10-14T00:00:00.000Z",
+      "updatedAt": "2021-10-14T00:00:00.000Z"
+    }
+  ]
 }

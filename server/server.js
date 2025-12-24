@@ -1,14 +1,10 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./config/database.js";
 import healthRoutes from "./routes/health.routes.js";
-import assessmentRoutes from "./routes/assessment.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 dotenv.config();
-
-// Connect to MongoDB
-connectDB();
 
 const app = express();
 
@@ -19,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/health", healthRoutes);
-app.use("/api/assessments", assessmentRoutes);
+app.use("/api/users", userRoutes);
 
 // 404 handler
 app.use((req, res) => {
