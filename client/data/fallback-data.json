@@ -1,0 +1,15 @@
+{
+  "studentName": "Jeevan Chopra",
+  "examType": "speechace",
+  "testDate": "2021-10-14T00:00:00.000Z",
+  "mobile": "+1 234-567-8900",
+  "email": "jeevan.chopra@example.com",
+  "overallScore": 7,
+  "skills": {
+    "pronunciation": 8,
+    "fluency": 7,
+    "vocabulary": 6,
+    "grammar": 7
+  },
+  "profilePhoto": "/profile.jpg"
+}
