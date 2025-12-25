@@ -1,9 +1,4 @@
-/**
- * Generate feedback based on score ranges
- * @param score - Score value
- * @param maxScore - Maximum score for the exam type (default: 9)
- * @returns Feedback string
- */
+//====== Generate feedback based on score ranges ======
 export const generateFeedback = (score: number, maxScore: number = 9): string => {
   const percentage = (score / maxScore) * 100;
   
@@ -16,9 +11,7 @@ export const generateFeedback = (score: number, maxScore: number = 9): string =>
   }
 };
 
-/**
- * Generate feedback for all skills and overall
- */
+//====== Generate feedback for all skills and overall ======
 export const generateAllFeedback = (
   scores: {
     overall: number;

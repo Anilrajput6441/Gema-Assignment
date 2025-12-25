@@ -10,11 +10,10 @@ export default function CreateUserPage() {
   const [success, setSuccess] = useState(false);
   const [userId, setUserId] = useState("");
 
-  // Check if userId already exists in localStorage
+  //====== Check if userId already exists in localStorage ======
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
-      // User already exists, redirect to exam form
       router.push("/submit-exam");
     }
   }, [router]);
@@ -47,17 +46,9 @@ export default function CreateUserPage() {
         throw new Error(data.message || "Failed to create user");
       }
 
-      // Store userId in localStorage
+      //====== Store userId in localStorage ======
       if (data.data.userId) {
         localStorage.setItem("userId", data.data.userId);
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            userId: data.data.userId,
-            studentName: data.data.studentName,
-            email: data.data.email,
-          })
-        );
       }
 
       setSuccess(true);

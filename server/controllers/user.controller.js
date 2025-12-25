@@ -5,9 +5,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/**
- * Load users from JSON file
- */
+//====== Load users from JSON file ======
 const loadUsers = () => {
   try {
     const filePath = path.join(__dirname, "../data/users.json");
@@ -22,87 +20,18 @@ const loadUsers = () => {
   }
 };
 
-/**
- * Save users to JSON file
- */
+//====== Save users to JSON file ======
 const saveUsers = (users) => {
   try {
     const filePath = path.join(__dirname, "../data/users.json");
     fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
-    return true;
   } catch (error) {
     console.error("Error saving users:", error);
     throw error;
   }
 };
 
-/**
- * Load assessments from JSON file (for backward compatibility)
- */
-const loadAssessments = () => {
-  try {
-    const filePath = path.join(__dirname, "../data/assessments.json");
-    const data = fs.readFileSync(filePath, "utf8");
-    return JSON.parse(data);
-  } catch (error) {
-    console.error("Error loading assessments:", error);
-    return [];
-  }
-};
-
-/**
- * Organize assessments by user
- * Structure: User -> Exams Array -> Scores Array
- */
-const organizeByUser = (assessments) => {
-  const userMap = {};
-
-  assessments.forEach((assessment) => {
-    const userKey = assessment.email || assessment.studentName;
-    
-    if (!userMap[userKey]) {
-      userMap[userKey] = {
-        studentName: assessment.studentName,
-        email: assessment.email || "",
-        mobile: assessment.mobile || "",
-        profilePhoto: assessment.profilePhoto || "",
-        exams: [],
-      };
-    }
-
-    // Convert skills object to array format
-    const scores = [
-      assessment.skills.pronunciation,
-      assessment.skills.fluency,
-      assessment.skills.vocabulary,
-      assessment.skills.grammar,
-    ];
-
-    // Add exam with scores array
-    userMap[userKey].exams.push({
-      _id: assessment._id,
-      examType: assessment.examType,
-      testDate: assessment.testDate,
-      overallScore: assessment.overallScore,
-      scores: scores, // Array of scores: [pronunciation, fluency, vocabulary, grammar]
-      createdAt: assessment.createdAt,
-      updatedAt: assessment.updatedAt,
-    });
-  });
-
-  // Convert map to array and sort exams by date
-  return Object.values(userMap).map((user) => ({
-    ...user,
-    exams: user.exams.sort(
-      (a, b) => new Date(b.testDate) - new Date(a.testDate)
-    ),
-  }));
-};
-
-/**
- * Create a new user
- * Returns user ID for submitting exam data
- */
+//====== Create a new user (Returns user ID for submitting exam data) ======
 export const createUser = async (req, res) => {
   try {
     const { studentName, email, mobile, profilePhoto } = req.body;
@@ -169,9 +98,7 @@ export const createUser = async (req, res) => {
   }
 };
 
-/**
- * Submit all exam data for a user at once
- */
+//====== Submit all exam data for a user at once ======
 export const submitAllExamData = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -257,9 +184,7 @@ export const submitAllExamData = async (req, res) => {
   }
 };
 
-/**
- * Get all users with their exams and scores
- */
+//====== Get all users with their exams and scores ======
 export const getAllUsers = async (req, res) => {
   try {
     const users = loadUsers();
@@ -278,9 +203,7 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-/**
- * Get a specific user by userId
- */
+//====== Get a specific user by userId ======
 export const getUserById = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -308,43 +231,3 @@ export const getUserById = async (req, res) => {
     });
   }
 };
-
-/**
- * Get user's exams for a specific exam type
- */
-export const getUserExamsByType = async (req, res) => {
-  try {
-    const { userId, examType } = req.params;
-    const users = loadUsers();
-
-    const user = users.find((u) => u.userId === userId);
-
-    if (!user) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
-    }
-
-    const filteredExams = user.exams.filter(
-      (exam) => exam.examType === examType
-    );
-
-    res.status(200).json({
-      status: "success",
-      count: filteredExams.length,
-      data: {
-        ...user,
-        exams: filteredExams,
-      },
-    });
-  } catch (error) {
-    console.error("Error getting user exams:", error);
-    res.status(500).json({
-      status: "error",
-      message: "Failed to fetch user exams",
-      error: error.message,
-    });
-  }
-};
-

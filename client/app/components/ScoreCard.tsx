@@ -10,7 +10,7 @@ interface ScoreCardProps {
 export default function ScoreCard({ overallScore, maxScore }: ScoreCardProps) {
   const percentage = (overallScore / maxScore) * 100;
 
-  // Determine which GIF to show based on score percentage
+  //====== Determine which GIF to show based on score percentage ======
   const getGifSrc = () => {
     if (percentage >= 83) {
       return "/Ryan Gosling Clap GIF.gif";

@@ -22,7 +22,7 @@ interface UserData {
     examType: ExamType;
     testDate: string;
     overallScore: number;
-    scores: number[]; // [pronunciation, fluency, vocabulary, grammar]
+    scores: number[];
     createdAt: string;
     updatedAt: string;
   }>;
@@ -48,17 +48,17 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // Get current exam from userData
+  //====== Get current exam from userData ======
   const currentExam = userData?.exams.find(
     (exam) => exam.examType === currentExamType
   ) || userData?.exams[0] || null;
 
-  // Get available exam types
+  //====== Get available exam types ======
   const availableExamTypes = userData?.exams
     ? (Array.from(new Set(userData.exams.map((e) => e.examType))) as ExamType[])
     : [];
 
-  // If current exam type has no data, switch to first available
+  //====== If current exam type has no data, switch to first available ======
   if (currentExam && currentExam.examType !== currentExamType) {
     setCurrentExamType(currentExam.examType);
   }
@@ -67,7 +67,7 @@ export default function Home() {
     ? getExamConfig(currentExam.examType)
     : getExamConfig(currentExamType);
 
-  // Convert scores array to skills object for display
+  //====== Convert scores array to skills object for display ======
   const skills = currentExam
     ? {
         pronunciation: currentExam.scores[0] || 0,
@@ -82,7 +82,7 @@ export default function Home() {
         grammar: 0,
       };
 
-  // Generate feedback
+  //====== Generate feedback ======
   const feedback = currentExam
     ? generateAllFeedback(
         {

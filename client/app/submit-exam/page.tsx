@@ -13,7 +13,7 @@ export default function SubmitExamPage() {
 
   const examTypes = getAllExamTypes();
 
-  // Initialize form data for all exam types
+  //====== Initialize form data for all exam types ======
   const [formData, setFormData] = useState(() => {
     const initial: Record<
       string,
@@ -46,7 +46,7 @@ export default function SubmitExamPage() {
   });
 
   useEffect(() => {
-    // Get userId from localStorage
+    //====== Get userId from localStorage ======
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
       setUserId(storedUserId);
@@ -66,7 +66,7 @@ export default function SubmitExamPage() {
     }
 
     try {
-      // Convert form data to exams array
+      //====== Convert form data to exams array ======
       const exams = examTypes.map((type) => ({
         examType: type,
         testDate: new Date(formData[type].testDate).toISOString(),

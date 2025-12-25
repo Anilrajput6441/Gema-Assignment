@@ -13,7 +13,7 @@ export default function ExamTypeTabs({
   onExamTypeChange,
   availableExamTypes,
 }: ExamTypeTabsProps) {
-  // Always show all exam types, but highlight which ones have data
+  //====== Always show all exam types, but highlight which ones have data ======
   const allExamTypes = getAllExamTypes();
   const examTypes = availableExamTypes && availableExamTypes.length > 0 
     ? allExamTypes.filter(type => availableExamTypes.includes(type) || type === currentExamType)

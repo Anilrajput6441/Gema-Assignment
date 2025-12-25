@@ -1,6 +1,4 @@
-/**
- * Exam type definitions with their score ranges and configurations
- */
+//====== Exam type definitions with their score ranges and configurations ======
 
 export type ExamType = "speechace" | "cefr" | "ielts" | "pte" | "toefl" | "toeic";
 
@@ -57,23 +55,17 @@ export const EXAM_TYPES: Record<ExamType, ExamConfig> = {
   },
 };
 
-/**
- * Get exam type configuration
- */
+//====== Get exam type configuration ======
 export const getExamConfig = (examType: ExamType): ExamConfig => {
   return EXAM_TYPES[examType];
 };
 
-/**
- * Get all exam types as array
- */
+//====== Get all exam types as array ======
 export const getAllExamTypes = (): ExamType[] => {
   return Object.keys(EXAM_TYPES) as ExamType[];
 };
 
-/**
- * Convert score from one exam type to another (approximate)
- */
+//====== Convert score from one exam type to another (approximate) ======
 export const convertScore = (
   score: number,
   fromExam: ExamType,
