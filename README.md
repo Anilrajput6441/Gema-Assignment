@@ -1,6 +1,8 @@
 # Student Assessment Report System
-
 A full-stack application for managing and displaying student speaking assessment reports with support for multiple exam types (Speechace, CEFR, IELTS, PTE, TOEFL, TOEIC). Built with Next.js, Node.js, and Express.
+
+<img width="1532" height="887" alt="Screenshot 2025-12-25 at 5 59 48 AM" src="https://github.com/user-attachments/assets/2a4e6b67-78ad-4b8f-8842-16a5cfcc1ca6" />
+<img width="1532" height="887" alt="Screenshot 2025-12-25 at 5 59 37 AM" src="https://github.com/user-attachments/assets/e2f814ce-2cdd-4dcf-b64d-4c47057e2187" />
 
 ## Features
 
@@ -120,7 +122,8 @@ The frontend will run on `http://localhost:3000`
 
 1. Open your browser and navigate to `http://localhost:3000`
 2. You'll see a welcome message if no user data exists
-3. Click "Create user account first" to get started
+3. You will see DUmmy User Data , If you want create a user by clicking on '+' icon
+4. Click "Create user account first" to get started
 
 ## How to Run the Project
 
@@ -359,7 +362,6 @@ The GIF is displayed inside an animated blob shape that continuously morphs.
 - Charts are rendered using Chart.js with both bar and radar chart options
 - The UI is fully responsive and uses Tailwind CSS for styling
 - Roboto Slab font is applied globally across the application
-- All comments follow the `//======comment========` style
 
 ## Troubleshooting
 
@@ -373,17 +375,4 @@ The GIF is displayed inside an animated blob shape that continuously morphs.
 - Check browser console for CORS errors
 - Verify API_BASE_URL in `client/lib/api.ts`
 
-### No data showing
-- Check if `server/data/users.json` exists and has valid JSON
-- Verify userId in browser's local storage
-- Check browser console for API errors
-- Frontend will fallback to JSON files if backend is unavailable
 
-### User ID not persisting
-- Check browser's local storage settings
-- Ensure cookies/local storage is enabled
-- Clear local storage and create a new user
-
-## License
-
-ISC
